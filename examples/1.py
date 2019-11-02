@@ -4,21 +4,25 @@ import sys
 sys.path.append('.')
 sys.path.append('..')
 
-from pysoundline import signal, toners, faders, timeline
+from pysoundline import signal, toners, faders, timeline, constants
 
-s400 = signal.Signal(faders.ExpFader(10), toners.ConstToner(400), 1)
-s600 = signal.Signal(faders.ExpFader(10), toners.ConstToner(600), 1)
-s800 = signal.Signal(faders.ExpFader(10), toners.ConstToner(800), 1)
+sA3 = signal.Signal(faders.ExpFader(10), toners.ConstToner(constants.Note.A[3]), 1)
+sA4 = signal.Signal(faders.ExpFader(10), toners.ConstToner(constants.Note.A[4]), 1)
+sA5 = signal.Signal(faders.ExpFader(10), toners.ConstToner(constants.Note.A[5]), 1)
 
-s800.get_playback(10000).save('test1.wav')
+constants.Note.print_notes()
+sA5.get_playback(10000).save('test1.wav')
 
 t1 = timeline.Timeline()
-t1.add_sound(s600, 0)
-t1.add_sound(s800, 1)
+t1.add_sound(sA4, 0)
+t1.add_sound(sA5, 1)
 t1.get_playback(10000).save('test2.wav')
 
 t2 = timeline.Timeline()
-for i, s in enumerate([signal.Signal(faders.ExpFader(30), toners.ConstToner(t), 0.2) for t in range(400, 900, 50)]):
+for i, s in enumerate([
+        signal.Signal(faders.ExpFader(30), toners.ConstToner(t), 0.2)
+        for t in range(400, 900, 50)
+    ]):
     t2.add_sound(s, 0.2 * i)
 t2.get_playback(10000).save('test3.wav')
 
