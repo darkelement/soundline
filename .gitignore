@@ -1,0 +1,4 @@
+**/__pycache__
+*.add
+*.add.spl
+session.vim
