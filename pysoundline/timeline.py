@@ -1,6 +1,6 @@
 import numpy
 
-from . import playback, signal
+from . import constants, playback, signal
 
 class SoundContainer:
     def __init__(self, sound, time):
@@ -49,7 +49,7 @@ class Timeline:
         self.duration = int(self.stop_time - self.start_time)
         return self.duration
 
-    def get_playback(self, samplerate):
+    def get_playback(self, samplerate=constants.SAMPLERATE):
         return playback.Playback(self.__flatten(samplerate), samplerate)
 
     def __flatten(self, samplerate):

@@ -1,9 +1,11 @@
 import numpy
 import scipy.io.wavfile
 
+from . import constants
+
 class Playback:
 
-    def __init__(self, data, samplerate):
+    def __init__(self, data, samplerate=constants.SAMPLERATE):
         self.data = data
         self.samplerate = samplerate
 
