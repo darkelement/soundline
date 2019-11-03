@@ -3,7 +3,7 @@ import numpy
 from . import playback
 
 class Signal:
-    __2pi = 2 * numpy.pi
+    _2pi = 2 * numpy.pi
 
     def __init__(self, fader, toner, duration):
         self.fader = fader
@@ -15,6 +15,9 @@ class Signal:
 
     def get_playback(self, samplerate):
         time = numpy.arange(0, self.duration, 1.0 / samplerate)
-        data = numpy.array([numpy.sin(self.toner(t) * self.__2pi * t) * self.fader(t) for t in time])
+        data = numpy.array([numpy.sin(self.toner(t) * self._2pi * t) * self.fader(t) for t in time])
         return playback.Playback(data, samplerate)
+
+    def __repr__(self):
+        return 'Signal({0})'.format(str(self.fader))
 

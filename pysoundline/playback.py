@@ -6,7 +6,6 @@ class Playback:
     def __init__(self, data, samplerate):
         self.data = data
         self.samplerate = samplerate
-        self._normalize()
 
     def get_duration(self):
         return len(self.data) / float(self.samplerate)

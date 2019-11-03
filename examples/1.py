@@ -10,13 +10,14 @@ sA3 = signal.Signal(faders.ExpFader(10), toners.ConstToner(constants.Note.A[3]),
 sA4 = signal.Signal(faders.ExpFader(10), toners.ConstToner(constants.Note.A[4]), 1)
 sA5 = signal.Signal(faders.ExpFader(10), toners.ConstToner(constants.Note.A[5]), 1)
 
-constants.Note.print_notes()
-sA5.get_playback(10000).save('test1.wav')
+constants.print_notes()
+sA5.get_playback(constants.SAMPLERATE).save('example_1.1.wav')
 
 t1 = timeline.Timeline()
-t1.add_sound(sA4, 0)
-t1.add_sound(sA5, 1)
-t1.get_playback(10000).save('test2.wav')
+t1.add_sound(sA3, 0)
+t1.add_sound(sA4, 1)
+t1.add_sound(sA5, 2)
+t1.get_playback(constants.SAMPLERATE).save('example_1.2.wav')
 
 t2 = timeline.Timeline()
 for i, s in enumerate([
@@ -24,16 +25,16 @@ for i, s in enumerate([
         for t in range(400, 900, 50)
     ]):
     t2.add_sound(s, 0.2 * i)
-t2.get_playback(10000).save('test3.wav')
+t2.get_playback(constants.SAMPLERATE).save('example_1.3.wav')
 
 t3 = timeline.Timeline()
 t3.add_sound(t1, -1)
 t3.add_sound(t2, 0)
 t3.add_sound(t1, 1)
-t3.get_playback(10000).save('test4.wav')
+t3.get_playback(constants.SAMPLERATE).save('example_1.4.wav')
 
 s = signal.Signal(faders.ConstFader(0.5), toners.LineToner(100, 1000, 2), 2)
-s.get_playback(40000).save('test5.wav')
+s.get_playback(constants.SAMPLERATE).save('example_1.5.wav')
 
 t3.add_sound(s, t3.get_duration())
-t3.get_playback(10000).save('test6.wav')
+t3.get_playback(constants.SAMPLERATE).save('example_1.6.wav')

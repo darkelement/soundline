@@ -1,5 +1,5 @@
-
 class BaseToner:
+    """Base class for Toners"""
 
     def __init__(self):
         pass
@@ -9,6 +9,7 @@ class BaseToner:
 
 
 class ConstToner(BaseToner):
+    """Constant Toner"""
 
     def __init__(self, freq):
         self.freq = float(freq)
@@ -18,6 +19,7 @@ class ConstToner(BaseToner):
 
 
 class LineToner(BaseToner):
+    """Linear Toner"""
 
     def __init__(self, start_freq, stop_freq, duration):
         self.start_freq = float(start_freq)
