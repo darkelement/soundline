@@ -1,3 +1,6 @@
+# Toners define change of frequency in time of a sound.
+# See: `signal`, `faders`
+
 class BaseToner:
     """Base class for Toners"""
 

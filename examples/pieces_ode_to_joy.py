@@ -106,5 +106,5 @@ t.add_sound(t1, 0, volume=0.5)
 t.add_sound(t2, 16*d)
 t.add_sound(t3, 2*16*d)
 t.add_sound(t2, 3*16*d)
-t.get_playback().save('example_3.1.wav')
+t.get_playback().save('piece_ode_to_joy.wav')
 

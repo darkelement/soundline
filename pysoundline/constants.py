@@ -1,6 +1,6 @@
 import math
 
-SAMPLERATE = 10000
+SAMPLERATE = 44100
 
 def get_harmonics(freq, size, o1=0, o2=0):
     return [math.pow(2, k + o2/12.0) * freq for k in range(o1, size+o1)]

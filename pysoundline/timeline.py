@@ -10,6 +10,10 @@ class SoundContainer:
         self.volume = volume
 
 class Timeline:
+    """
+    `Timeline` allows composing many sounds into more complex one by defining their start in time
+    and volume relative to each other.
+    """
 
     def __init__(self):
         self.line = list()

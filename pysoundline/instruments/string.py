@@ -1,18 +1,17 @@
 from math import exp
 
-from .. import constants, playback, Timeline, Signal, faders, toners
+from .. import constants, faders, toners, Signal, Timeline
 
 class String:
     def __init__(self):
         pass
 
     def get_playback(self, freq, samplerate=constants.SAMPLERATE):
-        harmonics = constants.get_harmonics(freq, 10)
         t = Timeline()
 
-        for i, h in enumerate(harmonics):
-            ef = faders.ExpFader(exp(-i), 5)
-            ct = toners.ConstToner(h)
+        for i in range(0, 7):
+            ef = faders.ExpFader(exp(-10.0 * i * i), 5 * (i + 1) * (i + 1))
+            ct = toners.ConstToner((i + 1) * freq)
             s = Signal(ef, ct, 2)
             t.add_sound(s, 0)
 
