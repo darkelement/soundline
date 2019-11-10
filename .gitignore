@@ -1,4 +1,7 @@
 **/__pycache__
 *.add
 *.add.spl
+*.mp3
+*.pyc
+*.wav
 session.vim

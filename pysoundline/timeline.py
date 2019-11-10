@@ -1,19 +1,21 @@
+import math
 import numpy
 
 from . import constants, playback, signal
 
 class SoundContainer:
-    def __init__(self, sound, time):
+    def __init__(self, sound, time, volume=1.0):
         self.sound = sound
         self.time = time
+        self.volume = volume
 
 class Timeline:
 
     def __init__(self):
         self.line = list()
 
-    def add_sound(self, sound, time):
-        self.line.append(SoundContainer(sound, time))
+    def add_sound(self, sound, time, volume=1.0):
+        self.line.append(SoundContainer(sound, time, volume))
 
     def get_start_time(self):
         start_time = 0
@@ -46,32 +48,32 @@ class Timeline:
     def get_duration(self):
         self.start_time = self.get_start_time()
         self.stop_time = self.get_stop_time()
-        self.duration = int(self.stop_time - self.start_time)
+        self.duration = self.stop_time - self.start_time
         return self.duration
 
     def get_playback(self, samplerate=constants.SAMPLERATE):
-        return playback.Playback(self.__flatten(samplerate), samplerate)
+        return playback.Playback(self._flatten(samplerate), samplerate)
 
-    def __flatten(self, samplerate):
+    def _flatten(self, samplerate):
         self.get_duration()
-        data = numpy.zeros(self.duration * samplerate)
+        data = numpy.zeros(math.ceil(self.duration * samplerate))
 
         for item in self.line:
-            item_data = self.__get_data_from_sound(item.sound, samplerate)
+            item_data = self._get_data_from_sound(item.sound, samplerate)
             start = int((item.time - self.start_time) * samplerate)
             stop = start + len(item_data)
 
             a = data[:start]
-            b = data[start:stop] + item_data
+            b = data[start:stop] + (item.volume * item_data)
             c = data[stop:]
 
             data = numpy.concatenate((a, b, c))
 
         return data
 
-    def __get_data_from_sound(self, sound, samplerate):
+    def _get_data_from_sound(self, sound, samplerate):
         if isinstance(sound, Timeline):
-            data = sound.__flatten(samplerate)
+            data = sound._flatten(samplerate)
         elif isinstance(sound, playback.Playback):
             if sound.get_samplerate() == samplerate:
                 data = sound.get_data()
