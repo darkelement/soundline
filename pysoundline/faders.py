@@ -1,6 +1,12 @@
 # Faders defines changes of volume in time of a sound.
 # See: `signal`, `toners`.
 
+# NOTE: Fader that can be used in `Signal` class must start with zero and end with zero. Otherwise
+# it may happen that the raise of the wave will be to quick and due to inertia of the speakers
+# membrane instead of desired sound we will hear cracks. Some faders defined here do not poses this
+# property. They are only meant to be used to build more complex fader and should not be used
+# directly to construct `Signal` objects.
+
 import numpy
 
 class BaseFader:
@@ -16,7 +22,11 @@ class BaseFader:
         return 'Fader()'
 
 class ConstFader(BaseFader):
-    """Constant Fader"""
+    """
+    A fader of constant amplitude. The amplitude is the same regardless of instance in time.
+
+    This fader should be used only to build more complex faders and should not be used in `Signal`.
+    """
 
     def __init__(self, amplitude):
         self.amplitude = amplitude
@@ -28,7 +38,12 @@ class ConstFader(BaseFader):
         return 'ConstFader(amplitude={0})'.format(self.amplitude)
 
 class LinearFader(BaseFader):
-    """Linear fader"""
+    """
+    The value of this fader is `0` before moment `0`, `amplitude` after `raise_time` and linearly
+    grows from `0` to `amplitude` between `0` and `raise_time`.
+
+    This fader should be used only to build more complex faders and should not be used in `Signal`.
+    """
 
     def __init__(self, raise_time):
         self.raise_time = float(raise_time)
@@ -58,7 +73,11 @@ class SineFader(BaseFader):
 
 
 class SimpleExpFader(BaseFader):
-    """Simple Exponential fader"""
+    """
+    A simple Exponential fader. Decreases from `amplitude` in moment `0` to `0` in infinity.
+
+    This fader should be used only to build more complex faders and should not be used in `Signal`.
+    """
 
     def __init__(self, a, amplitude):
         self.a = abs(a)
@@ -72,7 +91,17 @@ class SimpleExpFader(BaseFader):
 
 
 class ExpFader(BaseFader):
-    """Exponential fader"""
+    """
+    Decreases from `amplitude` in moment `raise_time` to `0` in infinity. Additionally before moment
+    `0` its value is `0` and from `0` to `raise_time` it grows exponentially to avoid infinities and
+    sudden jumps in value.
+
+    Constant `a` describes the speed of decrease of value. After `a` seconds the signal will be `e`
+    (~ 2.71828) times smaller than `a` a second before.
+
+    Similar `SimpleExpFader` but with linear period of growth before exponential period, which makes
+    it suitable for use in `Signal`.
+    """
 
     def __init__(self, amplitude, a, raise_time=0.01):
         self.linear_fader = LinearFader(raise_time)
