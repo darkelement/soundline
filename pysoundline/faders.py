@@ -45,17 +45,20 @@ class LinearFader(BaseFader):
     This fader should be used only to build more complex faders and should not be used in `Signal`.
     """
 
-    def __init__(self, raise_time):
+    def __init__(self, amplitude, raise_time):
+        self.amplitude = float(amplitude)
         self.raise_time = float(raise_time)
 
     def at(self, time):
-        if time < 0 or self.raise_time < time:
-            return 0.0;
-
-        return float(time) / self.raise_time
+        if time < 0:
+            return 0
+        elif self.raise_time < time:
+            return self.amplitude
+        else:
+            return self.amplitude * float(time) / self.raise_time
 
     def __repr__(self):
-        return 'LinearFader(raise_time={})'.format(self.raise_time)
+        return 'LinearFader(amplitude={},raise_time={})'.format(self.amplitude, self.raise_time)
 
 
 class SineFader(BaseFader):
@@ -104,7 +107,7 @@ class ExpFader(BaseFader):
     """
 
     def __init__(self, amplitude, a, raise_time=0.01):
-        self.linear_fader = LinearFader(raise_time)
+        self.linear_fader = LinearFader(amplitude, raise_time)
         self.simple_exp_fader = SimpleExpFader(amplitude, a)
 
     def at(self, time):
